@@ -4,22 +4,18 @@ import java.util.GregorianCalendar;
 
 public class Transaction {
 
-	private long transactionNumber;
+	private static long transactionNumber = 0;
 	private GregorianCalendar transactionDate;
 	private String transactionType;
 
-	public Transaction(long transactionNumber, GregorianCalendar transacionDate, String transactionType) {
-		this.transactionNumber = transactionNumber;
+	public Transaction(GregorianCalendar transacionDate, String transactionType) {
+		Transaction.transactionNumber++;
 		this.transactionDate = transacionDate;
 		this.transactionType = transactionType;
 	}
 	
 	public long getTransactionNumber() {
 		return transactionNumber;
-	}
-
-	public void setTransactionNumber(long transactionNumber) {
-		this.transactionNumber = transactionNumber;
 	}
 
 	public GregorianCalendar getTransactionDate() {
@@ -50,7 +46,6 @@ public class Transaction {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((transactionDate == null) ? 0 : transactionDate.hashCode());
-		result = prime * result + (int) (transactionNumber ^ (transactionNumber >>> 32));
 		result = prime * result + ((transactionType == null) ? 0 : transactionType.hashCode());
 		return result;
 	}
@@ -68,8 +63,6 @@ public class Transaction {
 			if (other.transactionDate != null)
 				return false;
 		} else if (!transactionDate.equals(other.transactionDate))
-			return false;
-		if (transactionNumber != other.transactionNumber)
 			return false;
 		if (transactionType == null) {
 			if (other.transactionType != null)

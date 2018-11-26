@@ -5,19 +5,17 @@ import java.util.ArrayList;
 public class User {
 
 	private String email;
-	private String firstName;
-	private String lastName;
 	private String username;
 	private String password;
-	private ArrayList<Account> accounts;
+	private long balance;
+	private ArrayList<Transaction> transactions;
 
-	public User(String email, String firstName, String lastName, String username, String password) {
+	public User(String email, String username, String password, long balance) {
 		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-		accounts = new ArrayList<Account>();
+		this.balance = balance;
+		transactions = new ArrayList<Transaction>();	
 	}
 
 	public String getEmail() {
@@ -26,22 +24,6 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	public String getUsername() {
@@ -60,36 +42,30 @@ public class User {
 		this.password = password;
 	}
 
-	public ArrayList<Account> getAccounts() {
-		return accounts;
+	public long getBalance() {
+		return balance;
 	}
 
-	public void setAccounts(ArrayList<Account> accounts) {
-		this.accounts = accounts;
+	public void setBalance(long balance) {
+		this.balance = balance;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Accounts associated with this user:" + "\n");
-		for (Account a : accounts) {
-			sb.append("Account Number: " + a.getAccountNumber() + "\n");
-			sb.append("Balance: " + a.getBalance() + "\n");
-		}
-		
-		return "User [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-				+ ", password=" + password + "\n" + sb.toString() + "]";
+	public ArrayList<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(ArrayList<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((accounts == null) ? 0 : accounts.hashCode());
+		result = prime * result + (int) (balance ^ (balance >>> 32));
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((transactions == null) ? 0 : transactions.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -103,30 +79,22 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (accounts == null) {
-			if (other.accounts != null)
-				return false;
-		} else if (!accounts.equals(other.accounts))
+		if (balance != other.balance)
 			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
 			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
-			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
+			return false;
+		if (transactions == null) {
+			if (other.transactions != null)
+				return false;
+		} else if (!transactions.equals(other.transactions))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -136,4 +104,15 @@ public class User {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Accounts associated with this user:" + "\n");
+		for (Transaction t : transactions) {
+			sb.append(t.toString() + "\n");
+		}
+		
+		return "User [email=" + email + ", username=" + username
+				+ ", password=" + password + "\n" + sb.toString() + "]";
+	}
 }
